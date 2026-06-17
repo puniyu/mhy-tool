@@ -1,0 +1,22 @@
+[package]
+name = "mhy_tool_gacha"
+version = "0.1.0"
+authors.workspace = true
+license.workspace = true
+readme.workspace = true
+homepage.workspace = true
+repository.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+serde.workspace = true
+
+mhy_tool_common.workspace = true
+mhy_genshin_gacha = { version = "0.1.0", path = "../mhy_genshin_gacha" }
+
+[dev-dependencies]
+serde_json.workspace = true

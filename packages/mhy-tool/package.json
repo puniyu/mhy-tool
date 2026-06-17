@@ -1,0 +1,12 @@
+{
+  "name": "@puniyu/mhy-tool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@10.25.0"
+}

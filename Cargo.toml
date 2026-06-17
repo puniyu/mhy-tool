@@ -1,0 +1,24 @@
+[workspace]
+members = ["crates/*"]
+resolver = "2"
+
+[workspace.lints.clippy]
+unwrap_used = "deny"
+
+[workspace.package]
+authors = ["wuliya <3369906077@qq.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/puniyu/mhy-tool"
+repository = "https://github.com/puniyu/mhy-tool"
+edition = "2024"
+rust-version = "1.88.0"
+
+[workspace.dependencies]
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = { version = "1.0.150" }
+jiff = { version = "0.2.28", features = ["serde"] }
+
+mhy_tool_common = { version = "0.1.0", path = "crates/mhy_tool_common" }
+mhy_tool_gacha = { version = "0.1.0", path = "crates/mhy_tool_gacha" }
+mhy_genshin_gacha = { version = "0.1.0", path = "crates/mhy_genshin_gacha" }
