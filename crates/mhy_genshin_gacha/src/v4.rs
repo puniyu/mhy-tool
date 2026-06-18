@@ -62,3 +62,66 @@ pub struct Item<'a> {
     #[serde(borrow)]
     pub id: Cow<'a, str>,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use mhy_tool_common::gacha::UigfGachaType;
+
+    #[test]
+    fn test_hk4e_to_uigf_gacha_type_mapping() {
+        assert_eq!(UigfGachaType::from(Hk4eGachaType::A100), UigfGachaType::A100);
+        assert_eq!(UigfGachaType::from(Hk4eGachaType::A200), UigfGachaType::A200);
+        assert_eq!(UigfGachaType::from(Hk4eGachaType::A301), UigfGachaType::A301);
+        assert_eq!(UigfGachaType::from(Hk4eGachaType::A302), UigfGachaType::A302);
+        // A400 maps to A301 (merged)
+        assert_eq!(UigfGachaType::from(Hk4eGachaType::A400), UigfGachaType::A301);
+        assert_eq!(UigfGachaType::from(Hk4eGachaType::A500), UigfGachaType::A500);
+    }
+
+    #[test]
+    fn test_item_deserialize() {
+        let json = r#"{
+            "uigf_gacha_type": "301",
+            "gacha_type": "301",
+            "item_id": "10000032",
+            "count": "1",
+            "time": "2022-11-02 10:49:39",
+            "name": "班尼特",
+            "item_type": "武器",
+            "rank_type": "4",
+            "id": "1667354760051767691"
+        }"#;
+
+        let item: Item<'_> = serde_json::from_str(json).unwrap();
+        assert_eq!(item.gacha_type, Hk4eGachaType::A301);
+        assert_eq!(item.uigf_gacha_type, UigfGachaType::A301);
+        assert_eq!(item.name.as_deref(), Some("班尼特"));
+        assert_eq!(item.item_id.as_deref(), Some("10000032"));
+        assert_eq!(item.rank_type.as_deref(), Some("4"));
+        assert_eq!(item.id.as_ref(), "1667354760051767691");
+    }
+
+    #[test]
+    fn test_item_serialize_roundtrip() {
+        let json = r#"{
+            "uigf_gacha_type": "301",
+            "gacha_type": "301",
+            "item_id": "10000032",
+            "count": "1",
+            "time": "2022-11-02 10:49:39",
+            "name": "班尼特",
+            "item_type": "武器",
+            "rank_type": "4",
+            "id": "1667354760051767691"
+        }"#;
+
+        let item: Item<'_> = serde_json::from_str(json).unwrap();
+        let serialized = serde_json::to_string(&item).unwrap();
+        let roundtrip: Item<'_> = serde_json::from_str(&serialized).unwrap();
+
+        assert_eq!(roundtrip.gacha_type, Hk4eGachaType::A301);
+        assert_eq!(roundtrip.name.as_deref(), Some("班尼特"));
+        assert_eq!(roundtrip.id.as_ref(), "1667354760051767691");
+    }
+}
